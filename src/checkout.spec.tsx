@@ -101,4 +101,38 @@ defineFeature(feature, (test) => {
       expect(checkout.state.total).toBeCloseTo(parseFloat(expected));
     });
   });
+
+  test("USE-CASE 4: Buy N get M at % off", ({ given, and, when, then }) => {
+    given(
+      /^a checkout with "(.*)" priced at \$(\d+\.\d{2})$/,
+      (name, price) => {
+        act(() => {
+          checkout.setPrice(name, parseFloat(price));
+        });
+      }
+    );
+
+    and(/^a special "buy (\d+) get (\d+) free" on "soup"$/, (buy, get) => {
+      act(() => {
+        checkout.setSpecial("soup", {
+          type: "BUY_N_GET_M_PERCENT_OFF",
+          buy: parseInt(buy),
+          get: parseInt(get),
+          percentOff: 100,
+        });
+      });
+    });
+
+    when(/^I scan "soup" (\d+) times$/, (count) => {
+      act(() => {
+        for (let i = 0; i < parseInt(count); i++) {
+          checkout.scan("soup");
+        }
+      });
+    });
+
+    then(/^the total should be \$(\d+\.\d{2})$/, (expected) => {
+      expect(checkout.state.total).toBeCloseTo(parseFloat(expected));
+    });
+  });
 });

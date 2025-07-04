@@ -15,3 +15,9 @@ Feature: Checkout Order Total
     And a markdown of $0.20 on "soup"
     When I scan "soup"
     Then the total should be $1.69
+
+  Scenario: USE-CASE 4: Buy N get M at % off
+    Given a checkout with "soup" priced at $1.89
+    And a special "buy 1 get 1 free" on "soup"
+    When I scan "soup" 4 times
+    Then the total should be $3.78
