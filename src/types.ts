@@ -15,4 +15,13 @@ export type TSpecial_NFORX = {
   price: number;
   count: number;
 };
-export type TSpecial = TSpecial_NFORX | TSpecial_BUYNGETMOFF;
+export type TSpecial_BUYWGETWOFF = {
+  type: "BUY_WEIGHT_GET_WEIGHT_PERCENT_OFF";
+  buyWeight: number;
+  getWeight: number;
+  percentOff: number;
+};
+export type TSpecial =
+  | TSpecial_NFORX
+  | TSpecial_BUYNGETMOFF
+  | TSpecial_BUYWGETWOFF;

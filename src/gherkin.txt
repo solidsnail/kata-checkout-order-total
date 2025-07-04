@@ -40,3 +40,9 @@ Feature: Checkout Order Total
     When I scan "soup"
     And I remove "soup"
     Then the total should be $0.00
+
+  Scenario: USE-CASE 8: Weighted special - Buy 2lb get 1lb half off
+    Given a checkout with beef priced at $5.99 per pound
+    And a special "buy 2lb get 1lb 50% off" on "beef"
+    When I scan 3 pounds of "beef"
+    Then the total should be $14.98

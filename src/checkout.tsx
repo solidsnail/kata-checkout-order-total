@@ -111,7 +111,22 @@ export class Checkout extends Component<Props, State> {
       (sum, item) => sum + (item.weight ?? 0),
       0
     );
-    const total = totalWeight * (price - markdown);
+    const special = specials.find(
+      (r) => r.type === "BUY_WEIGHT_GET_WEIGHT_PERCENT_OFF"
+    );
+    let total = 0;
+
+    if (special) {
+      while (totalWeight > special.buyWeight + special.getWeight) {
+        total += special.buyWeight * (price - markdown);
+        total +=
+          special.getWeight *
+          (price - markdown) *
+          (1 - special.percentOff / 100);
+      }
+    }
+
+    total += totalWeight * (price - markdown);
     return total;
   }
 

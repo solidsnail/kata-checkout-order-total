@@ -235,4 +235,41 @@ defineFeature(feature, (test) => {
       expect(checkout.state.total).toBeCloseTo(parseFloat(expected));
     });
   });
+
+  test("USE-CASE 8: Weighted special - Buy 2lb get 1lb half off", ({
+    given,
+    and,
+    when,
+    then,
+  }) => {
+    given(
+      /^a checkout with beef priced at \$(\d+\.\d{2}) per pound$/,
+      (price) => {
+        act(() => {
+          checkout.setPrice("beef", parseFloat(price), true);
+        });
+      }
+    );
+
+    and('a special "buy 2lb get 1lb 50% off" on "beef"', () => {
+      act(() => {
+        checkout.setSpecial("beef", {
+          type: "BUY_WEIGHT_GET_WEIGHT_PERCENT_OFF",
+          buyWeight: 2,
+          getWeight: 1,
+          percentOff: 50,
+        });
+      });
+    });
+
+    when('I scan 3 pounds of "beef"', () => {
+      act(() => {
+        checkout.scan("beef", 3);
+      });
+    });
+
+    then(/^the total should be \$(\d+\.\d{2})$/, (expected) => {
+      expect(checkout.state.total).toBeCloseTo(parseFloat(expected));
+    });
+  });
 });
