@@ -6,6 +6,6 @@ Feature: Checkout Order Total
     Then the total should be $1.89
 
   Scenario: USE-CASE 2: Weihted item total calculation
-    Given a checkout with beef priced at $5.99 per pound
+    Given a checkout with "beef" priced at $5.99 per pound
     When I scan 2 pounds "beef"
     Then the total should be $11.98

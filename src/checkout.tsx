@@ -63,7 +63,12 @@ export class Checkout extends Component<Props, State> {
   };
 
   calculateWeightTotal(items: TItem[], price: number) {
-    throw new Error("Method not implemented.");
+    const totalWeight = items.reduce(
+      (sum, item) => sum + (item.weight ?? 0),
+      0
+    );
+    const total = totalWeight * price;
+    return total;
   }
 
   calculateUnitTotal = (items: TItem[], price: number): number => {

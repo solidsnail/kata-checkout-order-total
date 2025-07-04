@@ -27,16 +27,16 @@ defineFeature(feature, (test) => {
   }) => {
     given(
       /^a checkout with "(.*)" priced at \$(\d+\.\d{2})$/,
-      (item, price) => {
+      (name, price) => {
         act(() => {
-          checkout.setPrice(item, parseFloat(price));
+          checkout.setPrice(name, parseFloat(price));
         });
       }
     );
 
-    when(/^I scan "(.*)"$/, (item) => {
+    when(/^I scan "(.*)"$/, (name) => {
       act(() => {
-        checkout.scan(item);
+        checkout.scan(name);
       });
     });
 
@@ -52,16 +52,16 @@ defineFeature(feature, (test) => {
   }) => {
     given(
       /^a checkout with "(.*)" priced at \$(\d+\.\d{2}) per pound$/,
-      (item, price) => {
+      (name, price) => {
         act(() => {
-          checkout.setPrice(item, parseFloat(price));
+          checkout.setPrice(name, parseFloat(price), true);
         });
       }
     );
 
-    when(/^I scan (\d+) pounds "(.*)"$/, (item) => {
+    when(/^I scan (\d+) pounds "(.*)"$/, (weight, name) => {
       act(() => {
-        checkout.scan(item);
+        checkout.scan(name, weight);
       });
     });
 
