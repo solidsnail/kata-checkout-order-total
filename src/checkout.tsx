@@ -105,13 +105,14 @@ export class Checkout extends Component<Props, State> {
     markdown: number,
     specials: TSpecial[]
   ): number => {
-    const count = items.length;
+    let count = items.length;
     let total = 0;
 
     const nForX = specials.find((r) => r.type === "N_FOR_X");
     if (nForX) {
       while (count >= nForX.count) {
         total += nForX.price;
+        count -= nForX.count;
       }
     }
 
@@ -135,6 +136,7 @@ export class Checkout extends Component<Props, State> {
         remaining -= buyNgetMOff.buy + buyNgetMOff.get;
         applied += discounted;
       }
+      count = remaining;
     }
     total += count * (price - markdown);
     return total;
