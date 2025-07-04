@@ -25,15 +25,18 @@ defineFeature(feature, (test) => {
     when,
     then,
   }) => {
-    given(/^a checkout with soup priced at \$(\d+\.\d{2})$/, (price) => {
-      act(() => {
-        checkout.setPrice("soup", parseFloat(price));
-      });
-    });
+    given(
+      /^a checkout with "(.*)" priced at \$(\d+\.\d{2})$/,
+      (item, price) => {
+        act(() => {
+          checkout.setPrice(item, parseFloat(price));
+        });
+      }
+    );
 
-    when('I scan "soup"', () => {
+    when(/^I scan "(.*)"$/, (item) => {
       act(() => {
-        checkout.scan("soup");
+        checkout.scan(item);
       });
     });
 
