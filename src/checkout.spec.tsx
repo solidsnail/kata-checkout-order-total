@@ -44,4 +44,29 @@ defineFeature(feature, (test) => {
       expect(checkout.state.total).toBeCloseTo(parseFloat(expected));
     });
   });
+
+  test("USE-CASE 2: Weihted item total calculation", ({
+    given,
+    when,
+    then,
+  }) => {
+    given(
+      /^a checkout with "(.*)" priced at \$(\d+\.\d{2}) per pound$/,
+      (item, price) => {
+        act(() => {
+          checkout.setPrice(item, parseFloat(price));
+        });
+      }
+    );
+
+    when(/^I scan (\d+) pounds "(.*)"$/, (item) => {
+      act(() => {
+        checkout.scan(item);
+      });
+    });
+
+    then(/^the total should be \$(\d+\.\d{2})$/, (expected) => {
+      expect(checkout.state.total).toBeCloseTo(parseFloat(expected));
+    });
+  });
 });

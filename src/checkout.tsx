@@ -6,7 +6,7 @@ type Props = {
 };
 
 type State = {
-  prices: Map<string, { price: number }>;
+  prices: Map<string, { price: number; byWeight: boolean }>;
   scanned: TItem[];
   total: number;
 };
@@ -21,21 +21,21 @@ export class Checkout extends Component<Props, State> {
     };
   }
 
-  setPrice = (name: string, price: number) => {
+  setPrice = (name: string, price: number, byWeight = false) => {
     this.setState((prevState) => {
       const prices = new Map(prevState.prices);
-      prices.set(name, { price });
+      prices.set(name, { price, byWeight });
       return { prices };
     });
   };
 
-  scan = (name: string) => {
+  scan = (name: string, weight?: number) => {
     const item = this.state.prices.get(name);
     if (!item) throw new Error(`No price set for ${name}`);
     const price = item.price;
     this.setState(
       (prevState) => ({
-        scanned: [...prevState.scanned, { name, price }],
+        scanned: [...prevState.scanned, { name, price, weight }],
       }),
       this.calcTotal
     );
@@ -52,11 +52,19 @@ export class Checkout extends Component<Props, State> {
     for (const [name, items] of Object.entries(grouped)) {
       const priceInfo = prices.get(name);
       if (!priceInfo) continue;
-      const { price } = priceInfo;
-      total += this.calculateUnitTotal(items, price);
+      const { price, byWeight } = priceInfo;
+      if (byWeight) {
+        total += this.calculateWeightTotal(items, price);
+      } else {
+        total += this.calculateUnitTotal(items, price);
+      }
     }
     this.setState({ total: parseFloat(total.toFixed(2)) });
   };
+
+  calculateWeightTotal(items: TItem[], price: number) {
+    throw new Error("Method not implemented.");
+  }
 
   calculateUnitTotal = (items: TItem[], price: number): number => {
     const count = items.length;
