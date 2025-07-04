@@ -9,3 +9,9 @@ Feature: Checkout Order Total
     Given a checkout with "beef" priced at $5.99 per pound
     When I scan 2 pounds "beef"
     Then the total should be $11.98
+
+  Scenario: USE-CASE 3: Markdown reduces item price
+    Given a checkout with "soup" priced at $1.89
+    And a markdown of $0.20 on "soup"
+    When I scan "soup"
+    Then the total should be $1.69

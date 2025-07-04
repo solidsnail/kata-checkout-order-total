@@ -69,4 +69,36 @@ defineFeature(feature, (test) => {
       expect(checkout.state.total).toBeCloseTo(parseFloat(expected));
     });
   });
+
+  test("USE-CASE 3: Markdown reduces item price", ({
+    given,
+    and,
+    when,
+    then,
+  }) => {
+    given(
+      /^a checkout with "(.*)" priced at \$(\d+\.\d{2})$/,
+      (name, price) => {
+        act(() => {
+          checkout.setPrice(name, parseFloat(price));
+        });
+      }
+    );
+
+    and(/^a markdown of \$(\d+\.\d{2}) on "(.*)"$/, (name, markdown) => {
+      act(() => {
+        checkout.setMarkdown(name, parseFloat(markdown));
+      });
+    });
+
+    when('I scan "(.*)"', (name) => {
+      act(() => {
+        checkout.scan(name);
+      });
+    });
+
+    then(/^the total should be \$(\d+\.\d{2})$/, (expected) => {
+      expect(checkout.state.total).toBeCloseTo(parseFloat(expected));
+    });
+  });
 });

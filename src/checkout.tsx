@@ -7,6 +7,7 @@ type Props = {
 
 type State = {
   prices: Map<string, { price: number; byWeight: boolean }>;
+  markdowns: Map<string, number>;
   scanned: TItem[];
   total: number;
 };
@@ -16,6 +17,7 @@ export class Checkout extends Component<Props, State> {
     super(props);
     this.state = {
       prices: new Map(),
+      markdowns: new Map(),
       scanned: [],
       total: 0,
     };
@@ -26,6 +28,14 @@ export class Checkout extends Component<Props, State> {
       const prices = new Map(prevState.prices);
       prices.set(name, { price, byWeight });
       return { prices };
+    });
+  };
+
+  setMarkdown = (name: string, amount: number) => {
+    this.setState((prevState) => {
+      const markdowns = new Map(prevState.markdowns);
+      markdowns.set(name, amount);
+      return { markdowns };
     });
   };
 
@@ -42,7 +52,7 @@ export class Checkout extends Component<Props, State> {
   };
 
   calcTotal = () => {
-    const { scanned, prices } = this.state;
+    const { scanned, prices, markdowns } = this.state;
     let total = 0;
     const grouped: Record<string, TItem[]> = {};
     scanned.forEach((item) => {
@@ -53,27 +63,36 @@ export class Checkout extends Component<Props, State> {
       const priceInfo = prices.get(name);
       if (!priceInfo) continue;
       const { price, byWeight } = priceInfo;
+      const markdown = markdowns.get(name) ?? 0;
       if (byWeight) {
-        total += this.calculateWeightTotal(items, price);
+        total += this.calculateWeightTotal(items, price, markdown);
       } else {
-        total += this.calculateUnitTotal(items, price);
+        total += this.calculateUnitTotal(items, price, markdown);
       }
     }
     this.setState({ total: parseFloat(total.toFixed(2)) });
   };
 
-  calculateWeightTotal(items: TItem[], price: number) {
+  calculateWeightTotal(
+    items: TItem[],
+    price: number,
+    markdown: number
+  ): number {
     const totalWeight = items.reduce(
       (sum, item) => sum + (item.weight ?? 0),
       0
     );
-    const total = totalWeight * price;
+    const total = totalWeight * (price - markdown);
     return total;
   }
 
-  calculateUnitTotal = (items: TItem[], price: number): number => {
+  calculateUnitTotal = (
+    items: TItem[],
+    price: number,
+    markdown: number
+  ): number => {
     const count = items.length;
-    const total = count * price;
+    const total = count * (price - markdown);
     return total;
   };
 
