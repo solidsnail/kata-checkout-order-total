@@ -21,3 +21,9 @@ Feature: Checkout Order Total
     And a special "buy 1 get 1 free" on "soup"
     When I scan "soup" 4 times
     Then the total should be $3.78
+
+  Scenario: USE-CASE 5: N for X special
+    Given a checkout with soup priced at $1.89
+    And a special "3 for $5.00" on "soup"
+    When I scan "soup" 3 times
+    Then the total should be $5.00

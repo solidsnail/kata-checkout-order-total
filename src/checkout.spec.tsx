@@ -135,4 +135,34 @@ defineFeature(feature, (test) => {
       expect(checkout.state.total).toBeCloseTo(parseFloat(expected));
     });
   });
+
+  test("USE-CASE 5: N for X special", ({ given, and, when, then }) => {
+    given(/^a checkout with soup priced at \$(\d+\.\d{2})$/, (price) => {
+      act(() => {
+        checkout.setPrice("soup", parseFloat(price));
+      });
+    });
+
+    and('a special "3 for $5.00" on "soup"', () => {
+      act(() => {
+        checkout.setSpecial("soup", {
+          type: "N_FOR_X",
+          count: 3,
+          price: 5.0,
+        });
+      });
+    });
+
+    when(/^I scan "soup" (\d+) times$/, (count) => {
+      act(() => {
+        for (let i = 0; i < parseInt(count); i++) {
+          checkout.scan("soup");
+        }
+      });
+    });
+
+    then(/^the total should be \$(\d+\.\d{2})$/, (expected) => {
+      expect(checkout.state.total).toBeCloseTo(parseFloat(expected));
+    });
+  });
 });
