@@ -1,0 +1,6 @@
+Feature: Checkout Order Total
+
+  Scenario: USE-CASE 1: Scanning a per-unit item adds its price to the total
+    Given a checkout with soup priced at $1.89
+    When I scan "soup"
+    Then the total should be $1.89

@@ -1,3 +1,23 @@
 body {
   font-family: sans-serif;
 }
+
+.cash-register-screen {
+  font-size: 2em;
+  font-weight: bold;
+  color: lime;
+  background: black;
+  padding: 4px;
+  width: 200px;
+  height: 70px;
+  display: inline-flex;
+  flex-flow: column;
+  justify-content: space-around;
+  user-select: none;
+}
+
+.cash-register-screen-scanned {
+  display: flex;
+  justify-content: space-between;
+  font-size: 18px;
+}
