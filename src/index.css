@@ -56,6 +56,11 @@ body {
   box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1);
 }
 
+.product-btns {
+  display: flex;
+  gap: 10px
+}
+
 .product-image {
   max-width: 100px;
   max-height: 100px;
@@ -99,4 +104,14 @@ body {
 .product-weight-input {
   width: 50px;
   text-align: center;
+}
+
+.product-price {
+  font-weight: bold;
+}
+
+.product-markdown {
+  font-weight: bold;
+  display: flex;
+  gap: 10px
 }

@@ -14,6 +14,9 @@ function App() {
       if (product.markdown) {
         checkout.current.setMarkdown(product.id, product.markdown);
       }
+      if (product.special) {
+        checkout.current.setSpecial(product.id, product.special);
+      }
     }
   };
   const scan = (item: string, weight?: number) => {

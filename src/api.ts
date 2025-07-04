@@ -6,6 +6,12 @@ export const API_RESPONSE = {
     byWeight: false,
     weight: undefined,
     markdown: 0.2,
+    special: {
+      type: "BUY_WEIGHT_GET_WEIGHT_PERCENT_OFF",
+      buyWeight: 1,
+      getWeight: 1,
+      percentOff: 50,
+    },
   },
   beef: {
     id: "beef",
@@ -14,6 +20,7 @@ export const API_RESPONSE = {
     weight: 1,
     byWeight: true,
     markdown: undefined,
+    special: undefined,
   },
   banana: {
     id: "banana",
@@ -22,5 +29,6 @@ export const API_RESPONSE = {
     weight: 2,
     byWeight: true,
     markdown: undefined,
+    special: undefined,
   },
 } as const;

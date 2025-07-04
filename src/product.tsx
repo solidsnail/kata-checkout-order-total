@@ -5,21 +5,41 @@ type Props = (typeof API_RESPONSE)[keyof typeof API_RESPONSE] & {
   onScan: (item: string, weight?: number) => void;
   onRemove: (item: string, weight?: number) => void;
 };
-export const Product: FC<Props> = ({ src, id, weight, onScan, onRemove }) => {
+export const Product: FC<Props> = ({
+  src,
+  id,
+  weight,
+  markdown,
+  price,
+  onScan,
+  onRemove,
+}) => {
   const [currentWeight, setCurrentWeight] = useState(weight);
   return (
     <div className="product">
       <img className="product-image" src={src} width={60} />
       <b className="product-name">{id}</b>
-      <button className="product-add" onClick={() => onScan(id, currentWeight)}>
-        add
-      </button>
-      <button
-        className="product-remove"
-        onClick={() => onRemove(id, currentWeight)}
-      >
-        remove
-      </button>
+      {markdown ? (
+        <b className="product-markdown">
+          <s>${price}</s>${price - markdown}
+        </b>
+      ) : (
+        <b className="product-price">${price}</b>
+      )}
+      <div className="product-btns">
+        <button
+          className="product-add"
+          onClick={() => onScan(id, currentWeight)}
+        >
+          add
+        </button>
+        <button
+          className="product-remove"
+          onClick={() => onRemove(id, currentWeight)}
+        >
+          remove
+        </button>
+      </div>
       {typeof weight !== "undefined" && (
         <label className="product-weight">
           <span className="product-weight-label">Weight:</span>
