@@ -115,18 +115,21 @@ export class Checkout extends Component<Props, State> {
       (r) => r.type === "BUY_WEIGHT_GET_WEIGHT_PERCENT_OFF"
     );
     let total = 0;
+    let used = 0;
 
     if (special) {
-      while (totalWeight > special.buyWeight + special.getWeight) {
+      while (totalWeight - used >= special.buyWeight + special.getWeight) {
         total += special.buyWeight * (price - markdown);
         total +=
           special.getWeight *
           (price - markdown) *
           (1 - special.percentOff / 100);
+        used += special.buyWeight + special.getWeight;
       }
     }
 
-    total += totalWeight * (price - markdown);
+    const remaining = totalWeight - used;
+    total += remaining * (price - markdown);
     return total;
   }
 
