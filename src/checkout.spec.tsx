@@ -1,5 +1,5 @@
 import { defineFeature, loadFeature } from "jest-cucumber";
-import { render } from "@testing-library/react";
+import { act, render } from "@testing-library/react";
 import { Checkout } from "./checkout";
 
 let checkout: Checkout;
@@ -26,11 +26,15 @@ defineFeature(feature, (test) => {
     then,
   }) => {
     given(/^a checkout with soup priced at \$(\d+\.\d{2})$/, (price) => {
-      checkout.setPrice("soup", parseFloat(price));
+      act(() => {
+        checkout.setPrice("soup", parseFloat(price));
+      });
     });
 
     when('I scan "soup"', () => {
-      checkout.scan("soup");
+      act(() => {
+        checkout.scan("soup");
+      });
     });
 
     then(/^the total should be \$(\d+\.\d{2})$/, (expected) => {
