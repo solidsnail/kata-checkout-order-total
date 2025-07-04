@@ -85,13 +85,13 @@ defineFeature(feature, (test) => {
       }
     );
 
-    and(/^a markdown of \$(\d+\.\d{2}) on "(.*)"$/, (name, markdown) => {
+    and(/^a markdown of \$(\d+\.\d{2}) on "(.*)"$/, (markdown, name) => {
       act(() => {
         checkout.setMarkdown(name, parseFloat(markdown));
       });
     });
 
-    when('I scan "(.*)"', (name) => {
+    when(/^I scan "(.*)"$/, (name) => {
       act(() => {
         checkout.scan(name);
       });
