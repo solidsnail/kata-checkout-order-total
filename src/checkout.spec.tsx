@@ -165,4 +165,50 @@ defineFeature(feature, (test) => {
       expect(checkout.state.total).toBeCloseTo(parseFloat(expected));
     });
   });
+
+  test("USE-CASE 6: Buy N get M at % off (limit applied)", ({
+    given,
+    and,
+    when,
+    then,
+  }) => {
+    given(/^a checkout with soup priced at \$(\d+\.\d{2})$/, (price) => {
+      act(() => {
+        checkout.setPrice("soup", parseFloat(price));
+      });
+    });
+
+    and(/^a markdown of \$(\d+\.\d{2}) on "soup"$/, (markdown) => {
+      act(() => {
+        checkout.setMarkdown("soup", parseFloat(markdown));
+      });
+    });
+
+    and(
+      /^a special "buy (\d+) get (\d+) free" with limit (\d+) on "soup"$/,
+      (buy, get, limit) => {
+        act(() => {
+          checkout.setSpecial("soup", {
+            type: "BUY_N_GET_M_PERCENT_OFF",
+            buy: parseInt(buy),
+            get: parseInt(get),
+            percentOff: 100,
+            limit: parseInt(limit),
+          });
+        });
+      }
+    );
+
+    when(/^I scan "soup" (\d+) times$/, (count) => {
+      act(() => {
+        for (let i = 0; i < parseInt(count); i++) {
+          checkout.scan("soup");
+        }
+      });
+    });
+
+    then(/^the total should be \$(\d+\.\d{2})$/, (expected) => {
+      expect(checkout.state.total).toBeCloseTo(parseFloat(expected));
+    });
+  });
 });

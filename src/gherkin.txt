@@ -27,3 +27,10 @@ Feature: Checkout Order Total
     And a special "3 for $5.00" on "soup"
     When I scan "soup" 3 times
     Then the total should be $5.00
+
+  Scenario: USE-CASE 6: Buy N get M at % off (limit applied)
+    Given a checkout with soup priced at $1.89
+    And a markdown of $0.20 on "soup"
+    And a special "buy 1 get 1 free" with limit 2 on "soup"
+    When I scan "soup" 4 times
+    Then the total should be $3.38
