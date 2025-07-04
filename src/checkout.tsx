@@ -62,6 +62,22 @@ export class Checkout extends Component<Props, State> {
     );
   };
 
+  remove = (name: string, weight?: number) => {
+    const item = this.state.prices.get(name);
+    if (!item) throw new Error(`No price set for ${name}`);
+    if (item.byWeight && !weight)
+      throw new Error(`Weight required for ${name}`);
+    this.setState((prevState) => {
+      const index = prevState.scanned.findIndex(
+        (item) => item.name === name && item.weight === weight
+      );
+      if (index === -1) return null;
+      const scanned = [...prevState.scanned];
+      scanned.splice(index, 1);
+      return { scanned };
+    }, this.calcTotal);
+  };
+
   calcTotal = () => {
     const { scanned, prices, markdowns, specials: allSpecials } = this.state;
     let total = 0;

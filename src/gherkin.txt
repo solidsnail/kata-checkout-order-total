@@ -34,3 +34,9 @@ Feature: Checkout Order Total
     And a special "buy 1 get 1 free" with limit 2 on "soup"
     When I scan "soup" 4 times
     Then the total should be $3.38
+
+  Scenario: USE-CASE 7: Removing an item
+    Given a checkout with soup priced at $1.89
+    When I scan "soup"
+    And I remove "soup"
+    Then the total should be $0.00

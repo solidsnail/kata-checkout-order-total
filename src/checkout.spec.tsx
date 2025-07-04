@@ -211,4 +211,28 @@ defineFeature(feature, (test) => {
       expect(checkout.state.total).toBeCloseTo(parseFloat(expected));
     });
   });
+
+  test("USE-CASE 7: Removing an item", ({ given, when, then, and }) => {
+    given(/^a checkout with soup priced at \$(\d+\.\d{2})$/, (price) => {
+      act(() => {
+        checkout.setPrice("soup", parseFloat(price));
+      });
+    });
+
+    when('I scan "soup"', () => {
+      act(() => {
+        checkout.scan("soup");
+      });
+    });
+
+    and('I remove "soup"', () => {
+      act(() => {
+        checkout.remove("soup");
+      });
+    });
+
+    then(/^the total should be \$(\d+\.\d{2})$/, (expected) => {
+      expect(checkout.state.total).toBeCloseTo(parseFloat(expected));
+    });
+  });
 });
